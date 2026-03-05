@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 const contacts = [
   {
     label: 'Gmail',
-    value: 'siddharthparjane07@gmail.com',
-    href: 'mailto:siddharthparjane07@gmail.com',
+    value: 'siddharthparjane20@gmail.com',
+    href: 'mailto:siddharthparjane20@gmail.com',
     color: '#EA4335',
     bg: 'rgba(234,67,53,0.1)',
     border: 'rgba(234,67,53,0.25)',

@@ -14,7 +14,7 @@ const navItems = [
   { path: '/tasks', label: 'All Tasks', icon: ListTodo },
   { path: '/ai-studio', label: 'AI Studio', icon: Sparkles },
   { path: '/analytics', label: 'Analytics', icon: BarChart3 },
-   { path: '/contact', label: 'Contact', icon: Mail },
+  { path: '/contact', label: 'Contact', icon: Mail },
 ];
 
 export default function Layout({ children }) {
