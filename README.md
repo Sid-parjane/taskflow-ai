@@ -218,4 +218,4 @@ ai-task-manager/
 
 ---
 
-Built with ❤️ for portfolio showcase. MIT License.
+Built with ❤️ by Siddharth Parjane
