@@ -1,0 +1,172 @@
+
+/* ===== TABLET (max 1024px) ===== */
+@media (max-width: 1024px) {
+  .kanban-board {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Dashboard two-column → single column */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* AI Studio two-column → single column */
+  .ai-studio-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== MOBILE (max 768px) ===== */
+@media (max-width: 768px) {
+
+  /* Typography scale down */
+  .page-title { font-size: 22px !important; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .page-header .btn { width: 100%; justify-content: center; }
+
+  /* Stats — 2 per row on mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .stat-card { padding: 16px !important; }
+  .stat-value { font-size: 26px !important; }
+
+  /* Kanban — single column on mobile */
+  .kanban-board {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Modal — full screen on mobile */
+  .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+  .modal {
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 92vh !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 24px 20px !important;
+  }
+
+  /* Task card adjustments */
+  .task-card { padding: 13px !important; }
+
+  /* AI Studio */
+  .ai-studio-grid,
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard right sidebar goes below */
+  [style*="grid-template-columns: 1fr 360px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Analytics charts */
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tabs full width */
+  .tabs { max-width: 100% !important; }
+
+  /* Buttons in grids */
+  [style*="display: flex"][style*="gap"] .btn {
+    font-size: 13px;
+  }
+
+  /* Hide decorative floating cards on mobile (Landing) */
+  .floating-cards { display: none !important; }
+
+  /* Landing hero text */
+  .hero-title { font-size: 48px !important; }
+
+  /* Sidebar overlay */
+  .sidebar { width: 260px !important; }
+
+  /* Fix overflow issues */
+  .kanban-col { overflow: visible !important; }
+  .task-card { overflow: visible !important; }
+
+  /* Dropdown always on top */
+  .dropdown-menu {
+    position: fixed !important;
+    z-index: 9999 !important;
+    right: 16px !important;
+    min-width: 160px !important;
+  }
+}
+
+/* ===== SMALL MOBILE (max 480px) ===== */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .stat-value { font-size: 22px !important; }
+  .stat-label { font-size: 10px !important; }
+
+  .modal { padding: 20px 16px !important; }
+  .modal-title { font-size: 17px !important; }
+
+  /* Stack form grids */
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-title { font-size: 20px !important; }
+
+  /* Bottom nav hint */
+  .main-content { padding-bottom: 16px; }
+}
+
+/* ===== FIX INPUTS EVERYWHERE ===== */
+input, textarea, select, button {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto !important;
+}
+
+/* ===== FIX DROPDOWN CLIPPING ===== */
+.task-card, .kanban-col, .card {
+  overflow: visible !important;
+}
+
+/* ===== TOUCH DEVICES ===== */
+@media (hover: none) {
+  /* Remove hover states that look bad on touch */
+  .task-card:hover { transform: none !important; }
+  .btn:hover { transform: none !important; }
+  .card-hover:hover { transform: none !important; }
+
+  /* Bigger tap targets */
+  .nav-link { padding: 13px 14px !important; }
+  .btn { min-height: 44px; }
+  .btn-sm { min-height: 36px; }
+  .btn-icon { min-width: 44px; min-height: 44px; }
+
+  /* Hide custom cursor on touch */
+  * { cursor: auto !important; }
+}
+
+/* ===== LANDSCAPE MOBILE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .modal {
+    max-height: 95vh !important;
+    border-radius: 16px !important;
+    margin: 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+}
+
+/* ===== LARGE SCREENS (1400px+) ===== */
+@media (min-width: 1400px) {
+  .main-content { max-width: 1400px; }
+  .stats-grid { grid-template-columns: repeat(4, 1fr) !important; }
+}
