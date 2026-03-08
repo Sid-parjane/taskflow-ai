@@ -49,11 +49,26 @@ export default function Login() {
     }}>
       {/* Background */}
       <div style={{ position:'fixed', inset:0, overflow:'hidden', pointerEvents:'none' }}>
-        <div style={{
-          position:'absolute', top:'20%', left:'50%', transform:'translateX(-50%)',
-          width:500, height:500, borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)'
-        }} />
+        <motion.div
+          animate={{ x:[0,20,-15,0], y:[0,-15,20,0], scale:[1,1.05,0.95,1] }}
+          transition={{ duration:18, repeat:Infinity, ease:'linear' }}
+          style={{
+            position:'absolute', top:'20%', left:'50%', transform:'translateX(-50%)',
+            width:500, height:500, borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)',
+            filter:'blur(40px)',
+          }}
+        />
+        <motion.div
+          animate={{ x:[0,-20,10,0], y:[0,20,-15,0] }}
+          transition={{ duration:22, repeat:Infinity, ease:'linear' }}
+          style={{
+            position:'absolute', bottom:'10%', right:'20%',
+            width:300, height:300, borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(20,184,166,0.06) 0%, transparent 70%)',
+            filter:'blur(40px)',
+          }}
+        />
       </div>
 
       <motion.div
@@ -64,22 +79,42 @@ export default function Login() {
         {/* Logo */}
         <div style={{ textAlign:'center', marginBottom:40 }}>
           <Link to="/" style={{ textDecoration:'none', color:'inherit' }}>
-            <div style={{
-              width:48, height:48, borderRadius:14,
-              background:'linear-gradient(135deg, #6366f1, #14b8a6)',
-              display:'inline-flex', alignItems:'center', justifyContent:'center',
-              boxShadow:'0 0 30px rgba(99,102,241,0.4)', marginBottom:16
-            }}>
+            <motion.div
+              initial={{ scale:0, rotate:-180 }}
+              animate={{ scale:1, rotate:0 }}
+              transition={{ type:'spring', stiffness:200, damping:15 }}
+              style={{
+                width:48, height:48, borderRadius:14,
+                background:'linear-gradient(135deg, #6366f1, #14b8a6)',
+                display:'inline-flex', alignItems:'center', justifyContent:'center',
+                boxShadow:'0 0 30px rgba(99,102,241,0.4)', marginBottom:16
+              }}
+            >
               <Zap size={22} color="white" fill="white" />
-            </div>
+            </motion.div>
           </Link>
-          <h1 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:800, marginBottom:6 }}>
+          <motion.h1
+            initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
+            transition={{ delay:0.2 }}
+            style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:800, marginBottom:6 }}
+          >
             Welcome back
-          </h1>
-          <p style={{ color:'var(--text-secondary)', fontSize:15 }}>Sign in to your TaskFlow account</p>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity:0 }} animate={{ opacity:1 }}
+            transition={{ delay:0.3 }}
+            style={{ color:'var(--text-secondary)', fontSize:15 }}
+          >
+            Sign in to your TaskFlow account
+          </motion.p>
         </div>
 
-        <div className="card" style={{ borderColor:'var(--border-bright)' }}>
+        <motion.div
+          className="card"
+          style={{ borderColor:'var(--border-bright)' }}
+          initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
+          transition={{ delay:0.35, type:'spring', stiffness:200, damping:20 }}
+        >
           <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:20 }}>
             <div className="input-group">
               <label className="input-label">Email</label>
@@ -135,14 +170,18 @@ export default function Login() {
           >
             🎮 Try Demo Account
           </button>
-        </div>
+        </motion.div>
 
-        <p style={{ textAlign:'center', marginTop:20, color:'var(--text-secondary)', fontSize:14 }}>
+        <motion.p
+          initial={{ opacity:0 }} animate={{ opacity:1 }}
+          transition={{ delay:0.5 }}
+          style={{ textAlign:'center', marginTop:20, color:'var(--text-secondary)', fontSize:14 }}
+        >
           No account?{' '}
           <Link to="/register" style={{ color:'var(--accent-bright)', fontWeight:600, textDecoration:'none' }}>
             Create one free
           </Link>
-        </p>
+        </motion.p>
       </motion.div>
     </div>
   );
