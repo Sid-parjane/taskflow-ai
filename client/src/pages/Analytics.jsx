@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTasks } from '../context/TasksContext';
 import { useWindowSize } from '../hooks/useWindowSize';
@@ -7,6 +7,33 @@ import {
   CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { TrendingUp, CheckCircle2, Clock, Target } from 'lucide-react';
+
+function AnimatedCounter({ value, suffix = '', duration = 1.2 }) {
+  const [display, setDisplay] = useState(0);
+  const prevValue = useRef(0);
+  const numValue = typeof value === 'string' ? parseInt(value) || 0 : value;
+
+  useEffect(() => {
+    const start = prevValue.current;
+    const end = numValue;
+    if (start === end) return;
+    const startTime = performance.now();
+    const animate = (now) => {
+      const elapsed = (now - startTime) / (duration * 1000);
+      if (elapsed >= 1) {
+        setDisplay(end);
+        prevValue.current = end;
+        return;
+      }
+      const eased = 1 - Math.pow(1 - elapsed, 3);
+      setDisplay(Math.round(start + (end - start) * eased));
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [numValue, duration]);
+
+  return <>{display}{suffix}</>;
+}
 
 const STATUS_COLORS = { 'todo':'#94a3b8', 'in-progress':'#818cf8', 'review':'#f59e0b', 'done':'#22c55e' };
 const PRIORITY_COLORS = { low:'#94a3b8', medium:'#818cf8', high:'#f59e0b', critical:'#ef4444' };
@@ -79,23 +106,29 @@ export default function Analytics() {
       {/* Stats */}
       <div className="stats-grid">
         {[
-          { label:'Completion', value:`${completionRate}%`, icon:Target, color:'#818cf8' },
-          { label:'Total Tasks', value:stats?.total||0, icon:CheckCircle2, color:'#34d399' },
-          { label:'Avg Time', value:`${avgTime}m`, icon:Clock, color:'#fbbf24' },
-          { label:'Overdue', value:stats?.overdue||0, icon:TrendingUp, color:'#f87171' },
-        ].map(({ label, value, icon:Icon, color }, i) => (
+          { label:'Completion', value:completionRate, suffix:'%', icon:Target, color:'#818cf8' },
+          { label:'Total Tasks', value:stats?.total||0, suffix:'', icon:CheckCircle2, color:'#34d399' },
+          { label:'Avg Time', value:avgTime, suffix:'m', icon:Clock, color:'#fbbf24' },
+          { label:'Overdue', value:stats?.overdue||0, suffix:'', icon:TrendingUp, color:'#f87171' },
+        ].map(({ label, value, suffix, icon:Icon, color }, i) => (
           <motion.div key={label} className="stat-card"
-            initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
-            transition={{ delay: i * 0.07 }}
+            initial={{ opacity:0, y:20, scale:0.95 }}
+            animate={{ opacity:1, y:0, scale:1 }}
+            transition={{ delay: i * 0.1, type:'spring', stiffness:300, damping:24 }}
+            whileHover={{ y:-4, transition:{ duration:0.2 } }}
           >
             <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
               <div>
-                <div className="stat-value" style={{ color }}>{value}</div>
+                <div className="stat-value" style={{ color }}><AnimatedCounter value={value} suffix={suffix} /></div>
                 <div className="stat-label">{label}</div>
               </div>
-              <div style={{ padding:8, borderRadius:10, background:`${color}20`, flexShrink:0 }}>
+              <motion.div
+                style={{ padding:8, borderRadius:10, background:`${color}20`, flexShrink:0 }}
+                whileHover={{ scale:1.15, rotate:5 }}
+                transition={{ type:'spring', stiffness:400 }}
+              >
                 <Icon size={18} color={color} />
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         ))}
@@ -109,7 +142,10 @@ export default function Analytics() {
       }}>
 
         {/* 7-Day Activity */}
-        <motion.div className="card" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.1 }}>
+        <motion.div className="card"
+          initial={{ opacity:0, y:20, scale:0.98 }} animate={{ opacity:1, y:0, scale:1 }}
+          transition={{ delay:0.2, type:'spring', stiffness:200, damping:20 }}
+        >
           <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:15, marginBottom:16 }}>7-Day Activity</h3>
           <ResponsiveContainer width="100%" height={chartHeight}>
             <BarChart data={last7days} barGap={2} margin={{ left: -20, right: 4 }}>
@@ -125,7 +161,10 @@ export default function Analytics() {
         </motion.div>
 
         {/* Status Breakdown */}
-        <motion.div className="card" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.15 }}>
+        <motion.div className="card"
+          initial={{ opacity:0, y:20, scale:0.98 }} animate={{ opacity:1, y:0, scale:1 }}
+          transition={{ delay:0.3, type:'spring', stiffness:200, damping:20 }}
+        >
           <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:15, marginBottom:16 }}>Status Breakdown</h3>
           {statusData.length ? (
             <ResponsiveContainer width="100%" height={chartHeight}>
@@ -145,7 +184,10 @@ export default function Analytics() {
         </motion.div>
 
         {/* Priority Distribution */}
-        <motion.div className="card" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.2 }}>
+        <motion.div className="card"
+          initial={{ opacity:0, y:20, scale:0.98 }} animate={{ opacity:1, y:0, scale:1 }}
+          transition={{ delay:0.4, type:'spring', stiffness:200, damping:20 }}
+        >
           <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:15, marginBottom:16 }}>Priority Distribution</h3>
           {priorityData.length ? (
             <ResponsiveContainer width="100%" height={chartHeight}>
@@ -167,7 +209,10 @@ export default function Analytics() {
         </motion.div>
 
         {/* Categories */}
-        <motion.div className="card" initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.25 }}>
+        <motion.div className="card"
+          initial={{ opacity:0, y:20, scale:0.98 }} animate={{ opacity:1, y:0, scale:1 }}
+          transition={{ delay:0.5, type:'spring', stiffness:200, damping:20 }}
+        >
           <h3 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:15, marginBottom:16 }}>Categories</h3>
           {categoryData.length ? (
             <ResponsiveContainer width="100%" height={chartHeight}>

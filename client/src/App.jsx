@@ -30,7 +30,14 @@ function ProtectedRoute({ children }) {
 
 function PublicRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return null;
+  if (loading) return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:'var(--bg-void)' }}>
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+        <div className="spinner" />
+        <span style={{ fontSize:13, color:'var(--text-secondary)', fontFamily:'var(--font-body)' }}>Loading...</span>
+      </div>
+    </div>
+  );
   return user ? <Navigate to="/dashboard" replace /> : children;
 }
 

@@ -134,6 +134,11 @@ export default function Layout({ children }) {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-void)' }}>
 
+      {/* Animated background orbs */}
+      <div className="animated-orb animated-orb-1" />
+      <div className="animated-orb animated-orb-2" />
+      <div className="animated-orb animated-orb-3" />
+
       {/* ===== DESKTOP SIDEBAR ===== */}
       {!isMobile && (
         <aside style={{
@@ -227,14 +232,17 @@ export default function Layout({ children }) {
 
         {/* Page content */}
         <div style={{ padding: isMobile ? '20px 16px' : '36px 40px', flex: 1 }}>
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
-          >
-            {children}
-          </motion.div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 18, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
     </div>

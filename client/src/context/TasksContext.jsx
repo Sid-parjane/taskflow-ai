@@ -26,7 +26,9 @@ export function TasksProvider({ children }) {
     try {
       const res = await tasksAPI.getStats();
       setStats(res.data);
-    } catch {}
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
+    }
   }, []);
 
   const createTask = useCallback(async (data) => {

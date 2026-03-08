@@ -367,6 +367,168 @@ input, textarea, select, button, a, [role="button"] {
 
 canvas { pointer-events: none !important; }
 
+/* ===== ANIMATION ENHANCEMENTS ===== */
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(3deg); }
+}
+
+/* Pulsing glow for accent elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.15), 0 0 40px rgba(99,102,241,0.05); }
+  50% { box-shadow: 0 0 30px rgba(99,102,241,0.3), 0 0 60px rgba(99,102,241,0.1); }
+}
+
+/* Animated gradient shift for backgrounds */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Rotating gradient border effect */
+@keyframes border-glow-rotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Orb drift animation */
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-10px, 20px) scale(0.95); }
+  75% { transform: translate(-30px, -10px) scale(1.02); }
+}
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-25px, 15px) scale(0.97); }
+  50% { transform: translate(20px, -25px) scale(1.04); }
+  75% { transform: translate(15px, 20px) scale(0.98); }
+}
+
+/* Entrance slide-up */
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stat card glow on hover */
+.stat-card {
+  transition: var(--transition), box-shadow 0.4s ease;
+}
+.stat-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.08);
+}
+
+/* Card shimmer border on hover */
+.card-hover:hover,
+.card:hover {
+  transition: var(--transition), box-shadow 0.4s ease;
+}
+
+/* AI glow border animated */
+.ai-glow-border {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Animated gradient text utility */
+.gradient-text-animated {
+  background: linear-gradient(135deg, #6366f1, #14b8a6, #ec4899, #6366f1);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Button glow effect on primary */
+.btn-primary {
+  transition: var(--transition), box-shadow 0.3s ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(99,102,241,0.5), 0 0 15px rgba(99,102,241,0.2);
+  transform: translateY(-1px);
+}
+
+/* Nav link active indicator animation */
+.nav-link.active {
+  animation: slide-up-fade 0.3s ease;
+}
+
+/* Task card left border shimmer on hover */
+.task-card:hover::before {
+  background: linear-gradient(180deg, var(--indigo), var(--teal));
+  animation: gradient-shift 3s ease infinite;
+  background-size: 100% 200%;
+}
+
+/* Empty state float */
+.empty-icon {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Animated background orbs for the app */
+.animated-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.5;
+}
+.animated-orb-1 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  top: -5%;
+  left: 15%;
+  animation: orb-drift-1 20s ease-in-out infinite;
+}
+.animated-orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(20,184,166,0.08) 0%, transparent 70%);
+  bottom: 10%;
+  right: 5%;
+  animation: orb-drift-2 25s ease-in-out infinite;
+}
+.animated-orb-3 {
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(236,72,153,0.06) 0%, transparent 70%);
+  top: 40%;
+  right: 20%;
+  animation: orb-drift-1 18s ease-in-out infinite reverse;
+}
+
+/* Kanban column drop target pulse */
+.kanban-col {
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+
+/* Search bar focus glow */
+.search-bar:focus-within {
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1), 0 0 20px rgba(99,102,241,0.05);
+}
+
+/* Badge pulse for critical priority */
+.badge-critical {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Progress bar animated gradient */
+.progress-fill {
+  background: linear-gradient(90deg, var(--indigo), var(--teal), var(--indigo));
+  background-size: 200% 100%;
+  animation: gradient-shift 4s ease infinite;
+}
+
 /* ===== RESPONSIVE ===== */
 
 /* Large screens */

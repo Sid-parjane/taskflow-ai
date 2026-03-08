@@ -13,6 +13,15 @@ router.post('/register', async (req, res) => {
     if (!name || !email || !password)
       return res.status(400).json({ message: 'All fields required' });
 
+    if (name.trim().length < 2)
+      return res.status(400).json({ message: 'Name must be at least 2 characters' });
+
+    if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))
+      return res.status(400).json({ message: 'Invalid email format' });
+
+    if (password.length < 6)
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: 'Email already registered' });
 

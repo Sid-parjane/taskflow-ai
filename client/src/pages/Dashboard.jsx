@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useTasks } from '../context/TasksContext';
@@ -14,6 +14,32 @@ import {
 import toast from 'react-hot-toast';
 
 const categoryEmoji = { work:'💼', personal:'🌟', health:'💪', learning:'📚', finance:'💰', creative:'🎨', other:'📌' };
+
+function AnimatedCounter({ value, duration = 1.2 }) {
+  const [display, setDisplay] = useState(0);
+  const prevValue = useRef(0);
+
+  useEffect(() => {
+    const start = prevValue.current;
+    const end = typeof value === 'number' ? value : 0;
+    if (start === end) return;
+    const startTime = performance.now();
+    const animate = (now) => {
+      const elapsed = (now - startTime) / (duration * 1000);
+      if (elapsed >= 1) {
+        setDisplay(end);
+        prevValue.current = end;
+        return;
+      }
+      const eased = 1 - Math.pow(1 - elapsed, 3);
+      setDisplay(Math.round(start + (end - start) * eased));
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [value, duration]);
+
+  return <>{display}</>;
+}
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -83,17 +109,23 @@ export default function Dashboard() {
       <div className="stats-grid">
         {statCards.map(({ label, value, icon:Icon, color, bg }, i) => (
           <motion.div key={label} className="stat-card"
-            initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
-            transition={{ delay: i * 0.07 }}
+            initial={{ opacity:0, y:20, scale:0.95 }}
+            animate={{ opacity:1, y:0, scale:1 }}
+            transition={{ delay: i * 0.1, type:'spring', stiffness:300, damping:24 }}
+            whileHover={{ y:-4, transition:{ duration:0.2 } }}
           >
             <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
               <div>
-                <div className="stat-value" style={{ color }}>{value}</div>
+                <div className="stat-value" style={{ color }}><AnimatedCounter value={value} /></div>
                 <div className="stat-label">{label}</div>
               </div>
-              <div style={{ padding:8, borderRadius:10, background:bg, flexShrink:0 }}>
+              <motion.div
+                style={{ padding:8, borderRadius:10, background:bg, flexShrink:0 }}
+                whileHover={{ scale:1.15, rotate:5 }}
+                transition={{ type:'spring', stiffness:400 }}
+              >
                 <Icon size={18} color={color} />
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         ))}
