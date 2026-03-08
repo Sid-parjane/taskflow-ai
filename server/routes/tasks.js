@@ -77,6 +77,20 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// BULK update (for drag-and-drop reordering) — must be before /:id routes
+router.patch('/bulk/update', auth, async (req, res) => {
+  try {
+    const { updates } = req.body;
+    const ops = updates.map(({ id, ...data }) =>
+      Task.findOneAndUpdate({ _id: id, user: req.user._id }, data)
+    );
+    await Promise.all(ops);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // UPDATE task
 router.patch('/:id', auth, async (req, res) => {
   try {
@@ -96,14 +110,10 @@ router.patch('/:id', auth, async (req, res) => {
   }
 });
 
-// BULK update (for drag-and-drop reordering)
-router.patch('/bulk/update', auth, async (req, res) => {
+// DELETE all completed — must be before /:id route
+router.delete('/bulk/completed', auth, async (req, res) => {
   try {
-    const { updates } = req.body;
-    const ops = updates.map(({ id, ...data }) =>
-      Task.findOneAndUpdate({ _id: id, user: req.user._id }, data)
-    );
-    await Promise.all(ops);
+    await Task.deleteMany({ user: req.user._id, status: 'done' });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -116,16 +126,6 @@ router.delete('/:id', auth, async (req, res) => {
     const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
     if (!task) return res.status(404).json({ message: 'Task not found' });
     res.json({ message: 'Task deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// DELETE all completed
-router.delete('/bulk/completed', auth, async (req, res) => {
-  try {
-    await Task.deleteMany({ user: req.user._id, status: 'done' });
-    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
