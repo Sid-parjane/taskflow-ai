@@ -26,7 +26,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
   message: { message: 'Too many requests, please try again later.' }
 });
-app.use('/api/', limiter);
+app.use('/api', limiter);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
